@@ -8,7 +8,7 @@ editor: visual
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Week 1. 
+# Week 1. Anna Hyunjung Kim
 
 ## Module 2: Git and GitHub
 
@@ -29,6 +29,7 @@ Load the packages we need.
 # Use pacman to install (if needed) and load the packages
 pacman::p_load(pacman, tidyverse,
                nycflights13)
+options(dplyr.summarise.inform = FALSE)
 ```
 
 ```{r}
@@ -47,9 +48,7 @@ planes                           Plane metadata.
 weather                          Hourly weather data
 ```
 
-## Problem 2.
-
-Is there a relationship between the age of a plane and its delays?
+## Is there a relationship between the age of a plane and its delays?
 
 To explore the relationship between plane age and departure delays, I tried several approaches.
 
@@ -60,6 +59,10 @@ So, I decided to group the data by plane (tailnum) and compute the average delay
 Lastly, I tried to group it by year and claculte it. This made the pattern easier to see.\
 
 **The final plot shows a new pattern: older planes tended to have less delays. The trend line shows a slight negative relationship between age and delay.**
+
+*\[I thought it's better to show the whole process because it is homework, so the results don't looks good but the final chart shows it has correlation\]*
+
+## 2.0 Cleaning Data
 
 ```{r}
 #View(planes)
@@ -97,7 +100,9 @@ df_clean <-df1 %>%
 
 Now we are ready to analyse with data named 'df_clean'
 
-## Relationship between Plane Age and Departure Delay
+## 2.1 Scatter plots
+
+### Relationship between Plane Age and Departure Delay
 
 First try is scatter plot. It doesn't look good and hard to find pattern or linear.
 
@@ -130,7 +135,7 @@ So, then let's try to use number. I can try to use Pearson correlation coefficie
 cor(df_clean$plane_age, df_clean$dep_delay, use = "complete.obs")
 ```
 
-## Relationship between Plane Age and Arrival Delay
+### Relationship between Plane Age and Arrival Delay
 
 I will try to do the same with departure delay. It also doesn't look good to find any pattern.
 
@@ -200,7 +205,7 @@ ggplot(df_by_tailnum_arr, aes(x = plane_age, y = mean_arr_delay)) +
 
 We can find there is no relationship between mean of delay for each flight tailnum and delay.
 
-## Third try with mean of delay per year.
+## 2.3 Third try with mean of delay per year.
 
 Departure delay will be analysed first.
 
@@ -244,3 +249,33 @@ To better understand the relationship, I use cor function the correlation betwee
 -   Correlation between plane age and mean arrival delay: -0.43
 
 It suggest that older planes tend to have fewer delays on average.
+
+## Find the 10 days of the year that have the highest median departure delay, then select all flights from those 10 days.
+
+### 3.0 Find the 10 days of the year that have the highest median departure delay
+
+```{r}
+top10_dep_delay <- df_clean %>%
+  select(year, month, day, dep_delay) %>% 
+  group_by(year, month, day) %>% 
+  summarise(median_dep_delay = median(dep_delay)) %>% 
+  arrange(desc(median_dep_delay)) %>% 
+  head(10)
+
+top10_dep_delay
+```
+
+```{r}
+df_clean %>% 
+  inner_join(top10_dep_delay, by = c("year", "month", "day")) %>% 
+  arrange(desc(median_dep_delay))
+  
+```
+
+## 3.1 Select all flights from those 10 days.
+
+```{r}
+top10_dep_delay %>% 
+  inner_join(df_clean, by = c("year", "month", "day")) %>% 
+  arrange(desc(median_dep_delay))
+```
