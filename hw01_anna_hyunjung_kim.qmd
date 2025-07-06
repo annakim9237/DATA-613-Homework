@@ -1,5 +1,5 @@
 ---
-title: "Review"
+title: "DATA-613-001-Summer Data Science"
 format: html
 editor: visual
 ---
@@ -30,3 +30,217 @@ Load the packages we need.
 pacman::p_load(pacman, tidyverse,
                nycflights13)
 ```
+
+```{r}
+help(package = "nycflights13")
+data(package = "nycflights13")
+
+```
+
+We can see there are five data sets.
+
+```         
+airlines                         Airline names.
+airports                         Airport metadata
+flights                          Flights data
+planes                           Plane metadata.
+weather                          Hourly weather data
+```
+
+## Problem 2.
+
+Is there a relationship between the age of a plane and its delays?
+
+To explore the relationship between plane age and departure delays, I tried several approaches.
+
+First, I made a scatterplot using all flights, but the data was too noisy to see any clear pattern. Then I calculated the correlation between plane age and delay, but it was weak and not very helpful.
+
+So, I decided to group the data by plane (tailnum) and compute the average delay for each plane.
+
+Lastly, I tried to group it by year and claculte it. This made the pattern easier to see.\
+
+**The final plot shows a new pattern: older planes tended to have less delays. The trend line shows a slight negative relationship between age and delay.**
+
+```{r}
+#View(planes)
+## ?planes
+
+planes %>% 
+  select(tailnum, made_year = year ) -> planes_year
+```
+
+```{r}
+## ?flights
+## View(flights)
+
+flights_year <- flights %>%
+  left_join(planes_year, by = "tailnum")
+
+flights_year %>% 
+  mutate(plane_age = year - made_year) -> df1
+
+head(df1)
+colnames(df1)
+
+colSums(is.na(df1))
+colMeans(is.na(df1))
+```
+
+When I check the NA, dep_delay's percentage is 2.45 and arr_delay's is 2.8. So, I will remove the NA
+
+```{r}
+df_clean <-df1 %>%
+  filter(!is.na(dep_delay), !is.na(arr_delay), !is.na(plane_age))
+
+#colMeans(is.na(df_clean))
+```
+
+Now we are ready to analyse with data named 'df_clean'
+
+## Relationship between Plane Age and Departure Delay
+
+First try is scatter plot. It doesn't look good and hard to find pattern or linear.
+
+```{r}
+head(df_clean)
+
+df_clean %>% 
+  ggplot(data = df_clean, mapping = aes(x = plane_age, y = dep_delay))+
+  geom_point()+
+    labs(title = "Relationship between Plane Age and Departure Delay",
+       x = "Plane Age (years)",
+       y = "Departure Delay (minutes)")
+
+```
+
+Next try is box plot. It seems a lot of outlier. Also, it's hard to read.
+
+```{r}
+ggplot(df_clean, mapping = aes(x = as.factor(plane_age), y = dep_delay)) +
+  geom_boxplot()+
+  coord_flip()+   
+  labs(title = "Relationship between Plane Age and Departure Delay",
+       x = "Plane Age (years)",
+       y = "Departure Delay (minutes)")
+```
+
+So, then let's try to use number. I can try to use Pearson correlation coefficient using the `cor()` function. The result is -.015. It is weak correlation.
+
+```{r}
+cor(df_clean$plane_age, df_clean$dep_delay, use = "complete.obs")
+```
+
+## Relationship between Plane Age and Arrival Delay
+
+I will try to do the same with departure delay. It also doesn't look good to find any pattern.
+
+```{r}
+df_clean %>% 
+  ggplot(data = df_clean, mapping = aes(x = plane_age, y = arr_delay))+
+  geom_point()+
+    labs(title = "Relationship between Plane Age and Arrival Delay",
+       x = "Plane Age (years)",
+       y = "Arrival Delay (minutes)")
+
+ggplot(df_clean, mapping = aes(x = as.factor(plane_age), y = arr_delay)) +
+  geom_boxplot()+
+  coord_flip()+   
+  labs(title = "Relationship between Plane Age and Arrival Delay",
+       x = "Plane Age (years)",
+       y = "Arrival Delay (minutes)")
+```
+
+It's hard to say the relationship has linear. because -0.017 is not sufficient to say.
+
+```{r}
+cor(df_clean$plane_age, df_clean$arr_delay, use = "complete.obs")
+```
+
+So, I can't find the relationship between flight age and delay. But, I would like to try one more with mean of delay for each flight tailnum.
+
+## 2.2 Second try with mean of delay per tailnum. 
+
+Let's do departure delay first.
+
+```{r}
+df_by_tailnum <- df_clean %>%
+  select(tailnum, dep_delay, plane_age) %>% 
+  group_by(tailnum) %>%
+  summarize(mean_dep_delay = mean(dep_delay), plane_age = first(plane_age))
+
+df_by_tailnum 
+```
+
+```{r}
+ggplot(df_by_tailnum, aes(x = plane_age, y = mean_dep_delay)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm")+  
+  labs(title = "Relationship between Plane Age and Departure Delay",
+       x = "Plane Age (years)",
+       y = "Average of Departure Delay of tailnum(minutes)")
+```
+
+```{r}
+df_by_tailnum_arr <- df_clean %>%
+  select(tailnum, arr_delay, plane_age) %>% 
+  group_by(tailnum) %>%
+  summarize(mean_arr_delay = mean(arr_delay), plane_age = first(plane_age))
+
+df_by_tailnum_arr
+```
+
+```{r}
+ggplot(df_by_tailnum_arr, aes(x = plane_age, y = mean_arr_delay)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm")+  
+  labs(title = "Relationship between Plane Age and Arrival Delay",
+       x = "Plane Age (years)",
+       y = "Average of Arrival Delay of tailnum(minutes)")
+```
+
+We can find there is no relationship between mean of delay for each flight tailnum and delay.
+
+## Third try with mean of delay per year.
+
+Departure delay will be analysed first.
+
+```{r}
+df_by_tailnum_age <- df_clean %>%
+  select(tailnum, dep_delay, arr_delay, plane_age) %>% 
+  group_by(plane_age) %>%
+  summarize(mean_dep_delay = mean(dep_delay), mean_arr_delay = mean(arr_delay), plane_age = first(plane_age))
+
+df_by_tailnum_age
+```
+
+```{r}
+ggplot(df_by_tailnum_age, aes(x = plane_age, y = mean_dep_delay)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm")+  
+  labs(title = "Relationship between Plane Age and Departure Delay",
+       x = "Plane Age (years)",
+       y = "Average of Departure Delay of tailnum(minutes)")
+```
+
+```{r}
+ggplot(df_by_tailnum_age, aes(x = plane_age, y = mean_arr_delay)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm")+  
+  labs(title = "Relationship between Plane Age and Arrival Delay",
+       x = "Plane Age (years)",
+       y = "Average of Arrival Delay of tailnum(minutes)")
+```
+
+```{r}
+cor(df_by_tailnum_age$plane_age, df_by_tailnum_age$mean_dep_delay, use = "complete.obs")
+
+cor(df_by_tailnum_age$plane_age, df_by_tailnum_age$mean_arr_delay, use = "complete.obs")
+```
+
+To better understand the relationship, I use cor function the correlation between plane age and delays.
+
+-   Correlation between plane age and mean departure delay: -0.45
+
+-   Correlation between plane age and mean arrival delay: -0.43
+
+It suggest that older planes tend to have fewer delays on average.
