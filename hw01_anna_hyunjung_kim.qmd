@@ -17,3 +17,16 @@ This assignment will Consider the data in the nycflights13 package.
 -   **Problem 2**: Is there a relationship between the age of a plane and its delays?
 
 -   **Problem 3**: Find the 10 days of the year that have the highest median departure delay, then select all flights from those 10 days.
+
+```{r}
+# Install pacman if it's not already installed
+if (!require("pacman")) install.packages("pacman")
+```
+
+Load the packages we need.
+
+```{r}
+# Use pacman to install (if needed) and load the packages
+pacman::p_load(pacman, tidyverse,
+               nycflights13)
+```
