@@ -163,7 +163,7 @@ cor(df_clean$plane_age, df_clean$arr_delay, use = "complete.obs")
 
 So, I can't find the relationship between flight age and delay. But, I would like to try one more with mean of delay for each flight tailnum.
 
-## 2.2 Second try with mean of delay per tailnum. 
+## 2.2 Second try with mean of delay per tailnum.
 
 Let's do departure delay first.
 
