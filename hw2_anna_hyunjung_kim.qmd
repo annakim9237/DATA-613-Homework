@@ -87,6 +87,21 @@ leap_year
 
 Generate a sequence of dates from **January 1, 2015** to **December 31, 2025**, spaced by every **two months**. Extract the **year**, **quarter**, and **ISO week number** for each date.
 
+```{r}
+Q5_date <- seq(ymd("2015-01-01"), ymd("2025-12-31"), by = "2 months")
+
+Q5_date 
+
+Q5_data2<- tibble(
+  date = Q5_date ,
+  year = year(Q5_date ),
+  quarter = quarter(Q5_date ),
+  iso_week = isoweek(Q5_date )
+)
+
+Q5_data2
+```
+
 ### Question 6:
 
 Given the following dates, compute the difference in **months** and **weeks** between each consecutive pair.
