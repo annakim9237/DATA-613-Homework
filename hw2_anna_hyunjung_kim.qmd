@@ -11,7 +11,7 @@ library(tidyverse)
 library(lubridate)
 ```
 
-### **Question 1**
+### Question 1
 
 Write a function (using r code and structure demonstrated in class) to calculate a z score for a given observed value, a mean, and a standard deviation value. And then use your function to find a z score for the following problem. (Research the internet to find the formula used to calculate a z score)\
 Observed value = 25.77, mean = 23.54, standard deviation = 2.442
@@ -129,7 +129,7 @@ dur <- as.duration(end - start)
 dur
 
 weeks <- dur / dweeks(1)
-months <- dur / dmonths
+months <- dur / dmonths(1)
 
 
 tibble(
