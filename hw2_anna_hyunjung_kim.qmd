@@ -13,10 +13,78 @@ Observed value = 25.77, mean = 23.54, standard deviation = 2.442
 
 ```{r}
 
-z_score <- function(x, mean, sd) {
+Q1_z_score <- function(x, mean, sd) {
   (x - mean) / sd
 }
 
-z_score(25.77, 23.54, 2.442)
+Q1_z_score(25.77, 23.54, 2.442)
 
 ```
+
+### Question 2
+
+Write a function to calculate the natural log of a number multiplied by the common log of the same number divided by the cube root of a given prime number, $\dfrac{\ln x \times \log x }{\sqrt[3]{p}}$.\
+Use your function to find the answer if the number to be used for both log expressions is 32 and the given prime number is 11, $x = 32, \;\;p=11$.\
+Also use R code to round your answer to the nearest tenth
+
+```{r}
+
+```
+
+### Question 3
+
+Use and show R coding to calculate the standard deviation for each variable of the data table `mtcars` using the `Special For Loop Method`, which includes three components:
+
+-   Output – an object to store the results
+
+-   Sequence – the set of items to loop through
+
+-   Body – the operations performed in each iteration
+
+```{r}
+
+```
+
+### Question 4:
+
+Write only one line of the code to return only the leap years of years 2024, 3021, 2000 or 1800, 800, 5050, 600 and 7156. using subsetting with `[]` and without using built-in functions.
+
+-   If the year is divisible by four, it's a leap year.
+
+-   But if the year can be divided by 100 as well as four, it's not a leap year.
+
+-   However, if the year is divisible by 400, it is a leap year.
+
+```{r}
+
+```
+
+### Question 5:
+
+Generate a sequence of dates from **January 1, 2015** to **December 31, 2025**, spaced by every **two months**. Extract the **year**, **quarter**, and **ISO week number** for each date.
+
+### Question 6:
+
+Given the following dates, compute the difference in **months** and **weeks** between each consecutive pair.
+
+``` r
+sample_dates <- c("2018-03-15", "2020-07-20", "2023-01-10", "2025-09-05")
+```
+
+### Question 7: Higher-Order Functions with purrr
+
+Using `map()` and `map_dbl()`, compute the **mean**, **median**, and **standard deviation** for each numeric vector in the following list:
+
+``` r
+num_lists <- list(c(4, 16, 25, 36, 49), c(2.3, 5.7, 8.1, 11.4), c(10, 20, 30, 40, 50))
+```
+
+### Question 8: Combining lubridate and purrr
+
+Given a list of mixed date formats, use `map()` and `possibly()` from `purrr` to safely convert them to **Date** format and extract the **month name**.
+
+``` r
+date_strings <- list("2023-06-10", "2022/12/25", "15-Aug-2021", "InvalidDate")
+```
+
+## 

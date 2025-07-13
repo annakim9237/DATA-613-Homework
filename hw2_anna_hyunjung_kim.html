@@ -70,6 +70,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="hw2_anna_hyunjung_kim_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="hw2_anna_hyunjung_kim_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -105,15 +134,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Write a function (using r code and structure demonstrated in class) to calculate a z score for a given observed value, a mean, and a standard deviation value. And then use your function to find a z score for the following problem. (Research the internet to find the formula used to calculate a z score)<br>
 Observed value = 25.77, mean = 23.54, standard deviation = 2.442</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>z_score <span class="ot">&lt;-</span> <span class="cf">function</span>(x, mean, sd) {</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Q1_z_score <span class="ot">&lt;-</span> <span class="cf">function</span>(x, mean, sd) {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  (x <span class="sc">-</span> mean) <span class="sc">/</span> sd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">z_score</span>(<span class="fl">25.77</span>, <span class="fl">23.54</span>, <span class="fl">2.442</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Q1_z_score</span>(<span class="fl">25.77</span>, <span class="fl">23.54</span>, <span class="fl">2.442</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9131859</code></pre>
 </div>
 </div>
+</section>
+<section id="question-2" class="level3">
+<h3 class="anchored" data-anchor-id="question-2">Question 2</h3>
+<p>Write a function to calculate the natural log of a number multiplied by the common log of the same number divided by the cube root of a given prime number, <span class="math inline">\(\dfrac{\ln x \times \log x }{\sqrt[3]{p}}\)</span>.<br>
+Use your function to find the answer if the number to be used for both log expressions is 32 and the given prime number is 11, <span class="math inline">\(x = 32, \;\;p=11\)</span>.<br>
+Also use R code to round your answer to the nearest tenth</p>
+</section>
+<section id="question-3" class="level3">
+<h3 class="anchored" data-anchor-id="question-3">Question 3</h3>
+<p>Use and show R coding to calculate the standard deviation for each variable of the data table <code>mtcars</code> using the <code>Special For Loop Method</code>, which includes three components:</p>
+<ul>
+<li><p>Output – an object to store the results</p></li>
+<li><p>Sequence – the set of items to loop through</p></li>
+<li><p>Body – the operations performed in each iteration</p></li>
+</ul>
+</section>
+<section id="question-4" class="level3">
+<h3 class="anchored" data-anchor-id="question-4">Question 4:</h3>
+<p>Write only one line of the code to return only the leap years of years 2024, 3021, 2000 or 1800, 800, 5050, 600 and 7156. using subsetting with <code>[]</code> and without using built-in functions.</p>
+<ul>
+<li><p>If the year is divisible by four, it’s a leap year.</p></li>
+<li><p>But if the year can be divided by 100 as well as four, it’s not a leap year.</p></li>
+<li><p>However, if the year is divisible by 400, it is a leap year.</p></li>
+</ul>
+</section>
+<section id="question-5" class="level3">
+<h3 class="anchored" data-anchor-id="question-5">Question 5:</h3>
+<p>Generate a sequence of dates from <strong>January 1, 2015</strong> to <strong>December 31, 2025</strong>, spaced by every <strong>two months</strong>. Extract the <strong>year</strong>, <strong>quarter</strong>, and <strong>ISO week number</strong> for each date.</p>
+</section>
+<section id="question-6" class="level3">
+<h3 class="anchored" data-anchor-id="question-6">Question 6:</h3>
+<p>Given the following dates, compute the difference in <strong>months</strong> and <strong>weeks</strong> between each consecutive pair.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sample_dates <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"2018-03-15"</span>, <span class="st">"2020-07-20"</span>, <span class="st">"2023-01-10"</span>, <span class="st">"2025-09-05"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="question-7-higher-order-functions-with-purrr" class="level3">
+<h3 class="anchored" data-anchor-id="question-7-higher-order-functions-with-purrr">Question 7: Higher-Order Functions with purrr</h3>
+<p>Using <code>map()</code> and <code>map_dbl()</code>, compute the <strong>mean</strong>, <strong>median</strong>, and <strong>standard deviation</strong> for each numeric vector in the following list:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>num_lists <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">16</span>, <span class="dv">25</span>, <span class="dv">36</span>, <span class="dv">49</span>), <span class="fu">c</span>(<span class="fl">2.3</span>, <span class="fl">5.7</span>, <span class="fl">8.1</span>, <span class="fl">11.4</span>), <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="question-8-combining-lubridate-and-purrr" class="level3">
+<h3 class="anchored" data-anchor-id="question-8-combining-lubridate-and-purrr">Question 8: Combining lubridate and purrr</h3>
+<p>Given a list of mixed date formats, use <code>map()</code> and <code>possibly()</code> from <code>purrr</code> to safely convert them to <strong>Date</strong> format and extract the <strong>month name</strong>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>date_strings <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">"2023-06-10"</span>, <span class="st">"2022/12/25"</span>, <span class="st">"15-Aug-2021"</span>, <span class="st">"InvalidDate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
 </section>
 </section>
 
