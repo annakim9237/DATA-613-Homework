@@ -6,6 +6,11 @@ editor: visual
 
 # **Functions-Iterations-Dates-purr**
 
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
 ### **Question 1**
 
 Write a function (using r code and structure demonstrated in class) to calculate a z score for a given observed value, a mean, and a standard deviation value. And then use your function to find a z score for the following problem. (Research the internet to find the formula used to calculate a z score)\
@@ -108,6 +113,31 @@ Given the following dates, compute the difference in **months** and **weeks** be
 
 ``` r
 sample_dates <- c("2018-03-15", "2020-07-20", "2023-01-10", "2025-09-05")
+```
+
+```{r}
+sample_dates <- c("2018-03-15", "2020-07-20", "2023-01-10", "2025-09-05")
+sample_dates <- ymd(sample_dates)
+
+sample_dates
+
+start <- sample_dates[1:3]
+end <- sample_dates[2:4]
+
+dur <- as.duration(end - start)
+
+dur
+
+weeks <- dur / dweeks(1)
+months <- dur / dmonths
+
+
+tibble(
+  start = start,
+  end = end,
+  weeks = round(weeks, 1),
+  months = round(months, 1)
+)
 ```
 
 ### Question 7: Higher-Order Functions with purrr
