@@ -1,0 +1,22 @@
+---
+title: "hw2_anna_hyunjung_kim"
+format: html
+editor: visual
+---
+
+# **Functions-Iterations-Dates-purr**
+
+### **Question 1**
+
+Write a function (using r code and structure demonstrated in class) to calculate a z score for a given observed value, a mean, and a standard deviation value. And then use your function to find a z score for the following problem. (Research the internet to find the formula used to calculate a z score)\
+Observed value = 25.77, mean = 23.54, standard deviation = 2.442
+
+```{r}
+
+z_score <- function(x, mean, sd) {
+  (x - mean) / sd
+}
+
+z_score(25.77, 23.54, 2.442)
+
+```
