@@ -170,7 +170,8 @@ date_strings <- list("2023-06-10", "2022/12/25", "15-Aug-2021", "InvalidDate")
 ```{r}
 date_strings <- list("2023-06-10", "2022/12/25", "15-Aug-2021", "InvalidDate")
 
-parse_date_time(date_strings, c("ymd", "Y/m/d", "d-b-Y"))
+#Test before making fuction
+#parse_date_time(date_strings, c("ymd", "Y/m/d", "d-b-Y"))
 
 Q8_date_change <- function(x) {
   parse_date_time(x, orders = c("ymd", "Y/m/d", "d-b-Y"))
