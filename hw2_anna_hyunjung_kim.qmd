@@ -167,4 +167,38 @@ Given a list of mixed date formats, use `map()` and `possibly()` from `purrr` to
 date_strings <- list("2023-06-10", "2022/12/25", "15-Aug-2021", "InvalidDate")
 ```
 
-## 
+```{r}
+date_strings <- list("2023-06-10", "2022/12/25", "15-Aug-2021", "InvalidDate")
+
+parse_date_time(date_strings, c("ymd", "Y/m/d", "d-b-Y"))
+
+Q8_date_change <- function(x) {
+  parse_date_time(x, orders = c("ymd", "Y/m/d", "d-b-Y"))
+}
+
+#Q8_date_change("2023-06-10")
+
+possibly_Q8 <- possibly(Q8_date_change, otherwise = NA)
+
+result1 <- map(date_strings, possibly_Q8)
+
+result1
+
+result_month<- map_dbl(result1, function(x) {
+  if (is.na(x)) 
+    NA 
+  else 
+    month(x)
+})
+
+#month_numbers
+
+result_name <- map_chr(result_month, function(x) {
+  if (is.na(x))
+    NA 
+  else 
+    month.abb[x]
+})
+
+result_name 
+```
