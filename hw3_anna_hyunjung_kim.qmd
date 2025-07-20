@@ -44,3 +44,44 @@ hw3 <- html_table(tables[[1]], fill = TRUE)
 #View(hw3)
 colnames(hw3)
 ```
+
+I can see on the table first two row is column name, so I should figure out. I will remove first line and modify the second line name.
+
+```{r}
+names(hw3) <- as.character(unlist(hw3[1, ]))
+#hw3
+hw3 <- hw3[-1,]
+hw3
+```
+
+## 3. The name of columns
+
+```{r}
+names(hw3) <- c(
+  "state_or_territory", 
+  "population_2024", 
+  "population_2020", 
+  "change_%_2010-2020", 
+  "change_abs_2010-2020",
+  "seats", 
+  "seat_%", 
+  "pop_per_elec_vote", 
+  "pop_per_seat", 
+  "%_us", 
+  "%_ec"
+)
+
+nrow(hw3) # the number of row is more than number of state
+tail(hw3) # I can see it's because of the total
+
+```
+
+## 4. Handle NA
+
+```{r}
+hw3[hw3 == "—"] <- NA
+
+hw3
+```
+
+## 5. The class of each column
