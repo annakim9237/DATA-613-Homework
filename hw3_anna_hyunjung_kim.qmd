@@ -1,0 +1,46 @@
+---
+title: "hw3_anna_hyunjung_kim"
+format: html
+editor: visual
+---
+
+## 1. Load the required package
+
+```{r}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(pacman, rvest, dplyr, tidyverse, xml2, janitor)
+```
+
+## 2. Load the web page
+
+```{r}
+library(rvest)
+
+url <- "https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_population"
+#url
+page <- read_html(url)
+```
+
+```{r}
+tables <- page %>% html_elements("table")
+
+#tables
+length(tables)
+```
+
+There are six tables on the web page, I should figure out which is the one I'm looking for. I was working as a web developer before so I can read HTML.
+
+```{r}
+
+tables[[1]] %>% html_table() %>% head()
+tables[[2]] %>% html_table() %>% head()
+tables[[3]] %>% html_table() %>% head()
+#tables[1]
+#tables[[1]]
+```
+
+```{r}
+hw3 <- html_table(tables[[1]], fill = TRUE) 
+#View(hw3)
+colnames(hw3)
+```
