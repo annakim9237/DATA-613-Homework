@@ -1,5 +1,5 @@
 ---
-title: "hw3_anna_hyunjung_kim"
+title: "Summer 2025 Sessions Data Science (DATA-613-001)"
 format: html
 editor: visual
 ---
