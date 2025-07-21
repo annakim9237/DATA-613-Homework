@@ -134,6 +134,13 @@ for (col in percent_cols) {
 
 sapply(hw3[percent_cols], class)   
 glimpse(hw3)
+
+```
+
+# Q1 conclusion
+
+```{r}
+head(hw3)
 ```
 
 # Question 2
@@ -156,7 +163,7 @@ con <- dbConnect(
 class(con) 
 ```
 
-##  
+## 
 
 ```{r}
 dbIsValid(con)
@@ -208,6 +215,10 @@ FROM flights
 WHERE carrier = 'UA';
 ```
 
+# Q2 conclusion
+
+The number of result is 58665. The detail is on the code
+
 # Question 3
 
 'Write a SQL query to count the total number of flights for each carrier.'
@@ -228,6 +239,28 @@ FROM flights
 GROUP BY carrier
 ORDER BY total_of_flight DESC;
 ```
+
+# Q3 conclusion
+
+**UA** has 58,665 flights.
+
+**B6** has 54,635 flights.
+
+**EV** has 54,173 flights.
+
+**DL** has 48,110 flights.
+
+**AA** has 32,729 flights.
+
+**MQ** has 26,397 flights.
+
+**US** has 20,536 flights.
+
+**9E** has 18,460 flights.
+
+**WN** has 12,275 flights.
+
+**VX** has 5,162 flights.
 
 ## Closing connection
 
