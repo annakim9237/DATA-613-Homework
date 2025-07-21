@@ -158,6 +158,10 @@ class(con)
 
 ##  
 
+```{r}
+dbIsValid(con)
+```
+
 ```{sql}
 #| connection: con
 SHOW TABLES;
@@ -166,6 +170,11 @@ SHOW TABLES;
 ```{sql}
 #| connection: con
 DESCRIBE;
+```
+
+```{sql, connection=con}
+DESCRIBE flights;
+DESCRIBE airlines;
 ```
 
 ```{sql}
@@ -179,4 +188,13 @@ FROM flights;
 SELECT *
 FROM airlines
 WHERE name = 'United Air Lines Inc.';
+```
+
+I found that on the flights table the airlines name is as codes so I found code from airlines. The code of United Air Lines Inc. is 'UA'.
+
+```{sql}
+#| connection: con
+SELECT *
+FROM flights
+WHERE carrier = 'UA';
 ```
