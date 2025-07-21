@@ -4,6 +4,8 @@ format: html
 editor: visual
 ---
 
+# Question 1
+
 ## 1. Load the required package
 
 ```{r}
@@ -15,6 +17,8 @@ pacman::p_load(pacman, rvest, dplyr, tidyverse, xml2, janitor)
 
 ```{r}
 library(rvest)
+library(stringr)
+library(dplyr)
 
 url <- "https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_population"
 #url
@@ -85,3 +89,51 @@ hw3
 ```
 
 ## 5. The class of each column
+
+```{r}
+sapply(hw3, class) # everything is character
+
+# remove comma and percentage sign
+
+comma_cols <- c(
+  "population_2024", "population_2020",
+  "change_abs_2010-2020", "pop_per_elec_vote", "pop_per_seat"
+)
+
+for (col in comma_cols) {
+  hw3[[col]] <- gsub(",", "", hw3[[col]])
+  hw3[[col]] <- as.numeric(hw3[[col]])
+}
+
+# there are warning, I guess it's because minus sign
+hw3[] <- lapply(hw3, function(x) gsub("−", "-", x))
+
+tail(hw3)
+```
+
+There are some special character in the number. So I have to handle it.
+
+```{r}
+percent_cols <- c(
+  "change_%_2010-2020", "seat_%", "%_us", "%_ec", "seats"
+)
+
+remove_special <- function(x) {
+  x <- gsub("%", "", x)                         
+  x <- gsub("\\*", "", x)                       
+  x <- str_extract(x, "-?\\d+(,\\d{3})*")       
+  as.numeric(x)
+}
+
+
+for (col in percent_cols) {
+  hw3[[col]] <- remove_special(hw3[[col]])
+}
+
+#hw3
+
+sapply(hw3[percent_cols], class)   
+glimpse(hw3)
+```
+
+# Question 2
