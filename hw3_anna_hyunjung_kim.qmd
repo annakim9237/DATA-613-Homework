@@ -4,6 +4,8 @@ format: html
 editor: visual
 ---
 
+# Homework 3 - Anna Hyunjung Kim
+
 # Question 1
 
 ## 1. Load the required package
