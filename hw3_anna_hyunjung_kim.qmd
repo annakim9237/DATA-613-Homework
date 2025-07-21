@@ -198,3 +198,29 @@ SELECT *
 FROM flights
 WHERE carrier = 'UA';
 ```
+
+As more information, I would like to check how many rows we have.
+
+```{sql}
+#| connection: con
+SELECT COUNT(*) AS 'Num_of_Q2'
+FROM flights
+WHERE carrier = 'UA';
+```
+
+# Question 3
+
+'Write a SQL query to count the total number of flights for each carrier.'
+
+Before make total, let's check the number of carrier.
+
+```{sql}
+#| connection: con
+SELECT DISTINCT carrier FROM flights;
+
+SELECT COUNT(DISTINCT carrier) FROM flights;
+```
+
+```{sql}
+
+```
