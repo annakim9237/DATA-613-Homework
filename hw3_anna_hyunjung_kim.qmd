@@ -222,5 +222,16 @@ SELECT COUNT(DISTINCT carrier) FROM flights;
 ```
 
 ```{sql}
+#| connection: con
+SELECT carrier, COUNT(*) AS total_of_flight
+FROM flights
+GROUP BY carrier
+ORDER BY total_of_flight DESC;
+```
 
+## Closing connection
+
+```{r}
+#| label: close-connection
+DBI::dbDisconnect(con, shutdown = TRUE)
 ```
