@@ -137,3 +137,46 @@ glimpse(hw3)
 ```
 
 # Question 2
+
+## 1. Load Package
+
+```{r}
+library(DBI)
+library(duckdb)
+```
+
+## 2. Load File
+
+```{r}
+con <- dbConnect(
+  duckdb(dbdir = "./data/flights.duckdb"),
+  read_only = TRUE
+)
+
+class(con) 
+```
+
+##  
+
+```{sql}
+#| connection: con
+SHOW TABLES;
+```
+
+```{sql}
+#| connection: con
+DESCRIBE;
+```
+
+```{sql}
+#| connection: con
+SELECT *
+FROM flights;
+```
+
+```{sql}
+#| connection: con
+SELECT *
+FROM airlines
+WHERE name = 'United Air Lines Inc.';
+```
