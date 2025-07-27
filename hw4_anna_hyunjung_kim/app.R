@@ -12,7 +12,9 @@ ui <- fluidPage(
       checkboxGroupInput("columns", "Select variance you want to see", 
                          choices = names(mtcars),
                          selected = c("mpg", "cyl", "hp")),
-      selectInput("select1", "Choose the variance for Boxplot", choices = names(mtcars))
+      selectInput("select1", "Choose the variable for Box plot", choices = names(mtcars)),
+      selectInput("xvar", "Choose X variable for Scatter Plot", choices = names(mtcars), selected = "wt"),
+      selectInput("yvar", "Choose Y variable for Scatter Plot", choices = names(mtcars), selected = "mpg")
     ),
     
     mainPanel(
@@ -44,7 +46,7 @@ server <- function(input, output, session) {
   )
   
   output$plot <- renderPlot({
-    ggplot(mpg, aes(x = displ, y = hwy)) +
+    ggplot(mpg, aes(x = .data[[input$xvar]], y = .data[[input$yvar]])) +
       geom_point() +
       theme_bw() +
       xlab("Displacement") +
