@@ -22,7 +22,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   output$data <- renderTable(head(mtcars))
   output$Boxplot <- renderPlot(
-    ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+    ggplot(mtcars, aes(x = factor(cyl), y = mtcars[[input$select1]])) +
       geom_boxplot(fill = "lightblue") +
       labs(x = "cyl", y = "mpg", title = "mpg x cyp Bpxplot")
   )
