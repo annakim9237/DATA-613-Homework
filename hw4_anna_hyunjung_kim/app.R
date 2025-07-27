@@ -13,8 +13,9 @@ ui <- fluidPage(
                          choices = names(mtcars),
                          selected = c("mpg", "cyl", "hp")),
       selectInput("select1", "Choose the variable for Box plot", choices = names(mtcars)),
-      selectInput("xvar", "Choose X variable for Scatter Plot", choices = names(mtcars), selected = "wt"),
-      selectInput("yvar", "Choose Y variable for Scatter Plot", choices = names(mtcars), selected = "mpg")
+      selectInput("xvar_scatter", "Choose X variable for Scatter Plot", choices = names(mtcars), selected = "wt"),
+      selectInput("yvar_scatter", "Choose Y variable for Scatter Plot", choices = names(mtcars), selected = "mpg"),
+      selectInput("var_hist", "Choose variable for Histogram", choices = names(mtcars), selected = "mpg")
     ),
     
     mainPanel(
@@ -22,7 +23,9 @@ ui <- fluidPage(
       tabPanel("Summary", verbatimTextOutput("summary")),
       tabsetPanel(
         tabPanel("Test Boxplot", plotOutput("Boxplot")),
-        tabPanel("Scatter Plot", plotOutput("plot", width = "60%", height ="400px"))
+        tabPanel("Scatter Plot", plotOutput("plot", width = "90%")),
+        tabPanel("Histogram", plotOutput("histplot")
+        )
       )
       
     )
@@ -46,11 +49,17 @@ server <- function(input, output, session) {
   )
   
   output$plot <- renderPlot({
-    ggplot(mpg, aes(x = .data[[input$xvar]], y = .data[[input$yvar]])) +
+    ggplot(mtcars, aes(x = .data[[input$xvar_scatter]], y = .data[[input$yvar_scatter]])) +
       geom_point() +
       theme_bw() +
       xlab("Displacement") +
       ylab("Highway MPG")
+  })
+  
+  output$histplot <- renderPlot({
+    hist(mtcars[[input$var_hist]],
+         xlab = input$var_hist,
+         col = "pink")
   })
 }
 
