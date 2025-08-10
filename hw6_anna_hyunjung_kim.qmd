@@ -18,6 +18,7 @@ library(wordcloud)
 ```{r}
 austen <- austen_books()
 austen
+
 ```
 
 ```{r}
@@ -70,4 +71,15 @@ lex_afinn <- get_sentiments("afinn")
 nrc_words <- lex_nrc %>%
   filter(sentiment %in% c("joy", "positive")) %>%
   distinct(word)
+
+nrc_words 
+```
+
+```{r}
+nrc_pos_counts <- emma_words %>%
+  semi_join(nrc_words, by = "word") %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 50)
+
+nrc_pos_counts
 ```
