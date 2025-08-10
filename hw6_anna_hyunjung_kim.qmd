@@ -6,6 +6,7 @@ editor: visual
 
 ```{r}
 #install.packages(c("tidyverse", "tidytext", "janeaustenr", "wordcloud", "stringr"))
+#install.packages("textdata")
 
 library(tidyverse)
 library(tidytext)   
@@ -33,12 +34,18 @@ chapter_data
 ```
 
 ```{r}
+data(stop_words) 
+
 emma_words <- chapter_data %>%
   unnest_tokens(word, text) %>% 
   mutate(word = str_extract(word, "[a-z']+")) %>%  
-  filter(!is.na(word)) 
+  filter(!is.na(word)) %>% 
+  anti_join(stop_words, by = "word") 
 
 emma_words
+```
+
+```{}
 ```
 
 ```{r}
@@ -51,4 +58,16 @@ emma_words %>%
   ggplot(aes(word, n)) +
   geom_col() +
   xlab(NULL)
+```
+
+```{r}
+lex_nrc   <- get_sentiments("nrc")
+lex_bing  <- get_sentiments("bing")
+lex_afinn <- get_sentiments("afinn")
+```
+
+```{r}
+nrc_words <- lex_nrc %>%
+  filter(sentiment %in% c("joy", "positive")) %>%
+  distinct(word)
 ```
