@@ -40,3 +40,15 @@ emma_words <- chapter_data %>%
 
 emma_words
 ```
+
+```{r}
+library(forcats)
+
+emma_words %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 600) %>%
+  mutate(word = fct_reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_col() +
+  xlab(NULL)
+```
