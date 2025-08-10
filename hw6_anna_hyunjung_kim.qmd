@@ -13,3 +13,8 @@ library(janeaustenr)
 library(stringr)
 library(wordcloud)  
 ```
+
+```{r}
+austen <- austen_books()
+austen
+```
