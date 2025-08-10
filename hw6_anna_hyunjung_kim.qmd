@@ -4,4 +4,12 @@ format: html
 editor: visual
 ---
 
-## 
+```{r}
+#install.packages(c("tidyverse", "tidytext", "janeaustenr", "wordcloud", "stringr"))
+
+library(tidyverse)
+library(tidytext)   
+library(janeaustenr) 
+library(stringr)
+library(wordcloud)  
+```
