@@ -18,3 +18,16 @@ library(wordcloud)
 austen <- austen_books()
 austen
 ```
+
+```{r}
+emma_data <- austen %>%
+  filter(book == "Emma")
+
+#emma_data
+chapter_data <- emma_data %>% 
+  mutate(linenumber = row_number(),
+         chapter = cumsum(str_detect(text, regex("^chapter\\s+\\d+\\b"))))
+
+
+chapter_data
+```
