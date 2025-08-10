@@ -83,3 +83,33 @@ nrc_pos_counts <- emma_words %>%
 
 nrc_pos_counts
 ```
+
+```{r}
+bing_words <- lex_bing %>%
+  filter(sentiment == "positive") %>%
+  distinct(word)
+
+bing_words
+
+bing_pos_counts <- emma_words %>%
+  semi_join(bing_words, by = "word") %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 50)
+
+bing_pos_counts
+```
+
+```{r}
+afinn_words <- lex_afinn %>%
+  filter(value >= 1) %>%
+  distinct(word)
+
+afinn_words 
+
+afinn_pos_counts <- emma_words %>%
+  semi_join(afinn_words, by = "word") %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 50)
+
+afinn_pos_counts 
+```
