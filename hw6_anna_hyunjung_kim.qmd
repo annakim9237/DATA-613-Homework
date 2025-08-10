@@ -31,7 +31,7 @@ chapter_data <- emma_data %>%
          chapter = cumsum(str_detect(text, regex("^chapter\\s+\\d+\\b"))))
 
 
-chapter_data
+#chapter_data
 ```
 
 ```{r}
@@ -46,70 +46,66 @@ emma_words <- chapter_data %>%
 emma_words
 ```
 
-```{}
-```
-
 ```{r}
-library(forcats)
-
-emma_words %>%
-  count(word, sort = TRUE) %>%
-  filter(n > 600) %>%
-  mutate(word = fct_reorder(word, n)) %>%
-  ggplot(aes(word, n)) +
-  geom_col() +
-  xlab(NULL)
-```
-
-```{r}
-lex_nrc   <- get_sentiments("nrc")
-lex_bing  <- get_sentiments("bing")
-lex_afinn <- get_sentiments("afinn")
-```
-
-```{r}
-nrc_words <- lex_nrc %>%
-  filter(sentiment %in% c("joy", "positive")) %>%
+nrc_joy <- get_sentiments("nrc") %>%
+  filter(sentiment == "joy") %>%
   distinct(word)
 
-nrc_words 
-```
+nrc_joy
 
-```{r}
-nrc_pos_counts <- emma_words %>%
-  semi_join(nrc_words, by = "word") %>%
+emma_nrc_counts <- emma_words %>%
+  semi_join(nrc_joy, by = "word") %>%
   count(word, sort = TRUE) %>%
   filter(n > 50)
 
-nrc_pos_counts
+emma_nrc_counts 
 ```
 
 ```{r}
-bing_words <- lex_bing %>%
-  filter(sentiment == "positive") %>%
-  distinct(word)
-
-bing_words
-
-bing_pos_counts <- emma_words %>%
-  semi_join(bing_words, by = "word") %>%
-  count(word, sort = TRUE) %>%
-  filter(n > 50)
-
-bing_pos_counts
+# Bar chart
+ggplot(emma_nrc_counts, aes(x = reorder(word, n), y = n)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Frequent Joy Words in Emma (NRC)",
+       x = "Word", y = "Frequency")
 ```
 
 ```{r}
-afinn_words <- lex_afinn %>%
+set.seed(123)
+wordcloud(words = emma_nrc_counts$word,
+          freq = emma_nrc_counts$n,
+          max.words = 100,
+          colors = brewer.pal(8, "Dark2"))
+```
+
+```{r}
+afinn_pos <- get_sentiments("afinn") %>%
   filter(value >= 1) %>%
   distinct(word)
 
-afinn_words 
+afinn_pos 
+```
 
-afinn_pos_counts <- emma_words %>%
-  semi_join(afinn_words, by = "word") %>%
+```{r}
+
+emma_afinn_counts <- emma_words %>%
+  semi_join(afinn_pos, by = "word") %>%
   count(word, sort = TRUE) %>%
   filter(n > 50)
 
-afinn_pos_counts 
+emma_afinn_counts
+```
+
+```{r}
+ggplot(emma_afinn_counts, aes(x = reorder(word, n), y = n)) +
+  geom_col(fill = "forestgreen") +
+  coord_flip() +
+  labs(title = "Frequent Positive Words in Emma (AFINN)",
+       x = "Word", y = "Frequency")
+s
+set.seed(123)
+wordcloud(words = emma_afinn_counts$word,
+          freq = emma_afinn_counts$n,
+          max.words = 100,
+          colors = brewer.pal(8, "Set1"))
 ```
