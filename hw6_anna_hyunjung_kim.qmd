@@ -31,3 +31,12 @@ chapter_data <- emma_data %>%
 
 chapter_data
 ```
+
+```{r}
+emma_words <- chapter_data %>%
+  unnest_tokens(word, text) %>% 
+  mutate(word = str_extract(word, "[a-z']+")) %>%  
+  filter(!is.na(word)) 
+
+emma_words
+```
