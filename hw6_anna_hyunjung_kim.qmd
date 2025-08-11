@@ -4,6 +4,8 @@ format: html
 editor: visual
 ---
 
+# Load the liabraries
+
 ```{r}
 #install.packages(c("tidyverse", "tidytext", "janeaustenr", "wordcloud", "stringr"))
 #install.packages("textdata")
@@ -15,6 +17,8 @@ library(stringr)
 library(wordcloud)  
 ```
 
+# Load Data Set
+
 ```{r}
 austen <- austen_books()
 austen
@@ -23,6 +27,7 @@ austen
 
 ```{r}
 emma_data <- austen %>%
+  group_by(book) %>%
   filter(book == "Emma")
 
 #emma_data
