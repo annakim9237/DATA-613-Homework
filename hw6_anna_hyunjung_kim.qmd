@@ -64,7 +64,7 @@ emma_nrc_counts
 ```{r}
 # Bar chart
 ggplot(emma_nrc_counts, aes(x = reorder(word, n), y = n)) +
-  geom_col(fill = "steelblue") +
+  geom_col(fill = "blue") +
   coord_flip() +
   labs(title = "Frequent Joy Words in Emma (NRC)",
        x = "Word", y = "Frequency")
@@ -98,14 +98,47 @@ emma_afinn_counts
 
 ```{r}
 ggplot(emma_afinn_counts, aes(x = reorder(word, n), y = n)) +
-  geom_col(fill = "forestgreen") +
+  geom_col(fill = "darkgreen") +
   coord_flip() +
   labs(title = "Frequent Positive Words in Emma (AFINN)",
        x = "Word", y = "Frequency")
-s
+```
+
+```{r}
 set.seed(123)
 wordcloud(words = emma_afinn_counts$word,
           freq = emma_afinn_counts$n,
           max.words = 100,
           colors = brewer.pal(8, "Set1"))
+```
+
+```{r}
+bing_pos <- get_sentiments("bing") %>%
+  filter(sentiment == "positive") %>%
+  distinct(word)
+
+bing_pos 
+
+emma_bing_counts <- emma_words %>%
+  semi_join(bing_pos, by = "word") %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 50)
+
+emma_bing_counts 
+```
+
+```{r}
+ggplot(emma_bing_counts, aes(x = reorder(word, n), y = n)) +
+  geom_col(fill = "pink") +
+  coord_flip() +
+  labs(title = "Frequent Positive Words in Emma (BING)",
+       x = "Word", y = "Frequency")
+```
+
+```{r}
+set.seed(123)
+wordcloud(words = emma_bing_counts$word,
+          freq = emma_bing_counts$n,
+          max.words = 100,
+          colors = brewer.pal(8, "Paired"))
 ```
