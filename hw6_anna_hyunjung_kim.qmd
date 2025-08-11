@@ -25,12 +25,17 @@ austen
 
 ```
 
+# Data Organizing
+
 ```{r}
+#Group by book
 emma_data <- austen %>%
   group_by(book) %>%
   filter(book == "Emma")
 
-#emma_data
+#emma_data 
+# Create linenumber and chapter columns.
+# detect chapter boundaries using regex
 chapter_data <- emma_data %>% 
   mutate(linenumber = row_number(),
          chapter = cumsum(str_detect(text, regex("^chapter\\s+\\d+\\b"))))
@@ -39,9 +44,12 @@ chapter_data <- emma_data %>%
 #chapter_data
 ```
 
+# Tokenization
+
 ```{r}
 data(stop_words) 
 
+# Use unnest_tokens() to tokenize text into individual words.
 emma_words <- chapter_data %>%
   unnest_tokens(word, text) %>% 
   mutate(word = str_extract(word, "[a-z']+")) %>%  
@@ -51,7 +59,10 @@ emma_words <- chapter_data %>%
 emma_words
 ```
 
+# A. NRC sentiment analysis + plots
+
 ```{r}
+# apply sentiment filters for joy
 nrc_joy <- get_sentiments("nrc") %>%
   filter(sentiment == "joy") %>%
   distinct(word)
@@ -66,6 +77,8 @@ emma_nrc_counts <- emma_words %>%
 emma_nrc_counts 
 ```
 
+## a.1. Bar plot
+
 ```{r}
 # Bar chart
 ggplot(emma_nrc_counts, aes(x = reorder(word, n), y = n)) +
@@ -75,6 +88,8 @@ ggplot(emma_nrc_counts, aes(x = reorder(word, n), y = n)) +
        x = "Word", y = "Frequency")
 ```
 
+## a.2. Word Cloud
+
 ```{r}
 set.seed(123)
 wordcloud(words = emma_nrc_counts$word,
@@ -83,7 +98,10 @@ wordcloud(words = emma_nrc_counts$word,
           colors = brewer.pal(8, "Dark2"))
 ```
 
+# B. AFINN sentiment analysis + plots
+
 ```{r}
+# apply sentiment filters for afinn
 afinn_pos <- get_sentiments("afinn") %>%
   filter(value >= 1) %>%
   distinct(word)
@@ -101,13 +119,18 @@ emma_afinn_counts <- emma_words %>%
 emma_afinn_counts
 ```
 
+## b.1. bar plot
+
 ```{r}
 ggplot(emma_afinn_counts, aes(x = reorder(word, n), y = n)) +
+  # green color is too bright so darkgreen 
   geom_col(fill = "darkgreen") +
   coord_flip() +
   labs(title = "Frequent Positive Words in Emma (AFINN)",
        x = "Word", y = "Frequency")
 ```
+
+## b.2. Word Cloud
 
 ```{r}
 set.seed(123)
@@ -117,7 +140,10 @@ wordcloud(words = emma_afinn_counts$word,
           colors = brewer.pal(8, "Set1"))
 ```
 
+# BING sentiment analysis + plots
+
 ```{r}
+# apply sentiment filters for bing
 bing_pos <- get_sentiments("bing") %>%
   filter(sentiment == "positive") %>%
   distinct(word)
@@ -132,6 +158,8 @@ emma_bing_counts <- emma_words %>%
 emma_bing_counts 
 ```
 
+## c.1. Bar Plot
+
 ```{r}
 ggplot(emma_bing_counts, aes(x = reorder(word, n), y = n)) +
   geom_col(fill = "pink") +
@@ -139,6 +167,8 @@ ggplot(emma_bing_counts, aes(x = reorder(word, n), y = n)) +
   labs(title = "Frequent Positive Words in Emma (BING)",
        x = "Word", y = "Frequency")
 ```
+
+## C.2. Word Cloud
 
 ```{r}
 set.seed(123)
